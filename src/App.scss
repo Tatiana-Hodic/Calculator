@@ -1,0 +1,16 @@
+$primary-color: white;
+$button-operation: lightblue;
+$button-result: coral;
+
+body {
+  background-color: darken($primary-color, 10%);
+}
+
+.App {
+  text-align: center;
+  margin: 50px;
+  padding: 20px;
+  display: flex;
+}
+
+

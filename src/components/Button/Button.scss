@@ -1,0 +1,37 @@
+@import './../../App.scss';
+
+button {
+    color: black;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 3px;
+    outline: none;
+}
+
+.button-number {
+    background-color: $primary-color;
+
+    &:hover,
+    &:focus {
+        background-color: darken($primary-color, 20%);
+    }
+}
+
+.button-operation {
+    background-color: $button-operation;
+
+    &:hover,
+    &:focus {
+        background-color: darken($button-operation, 20%);
+    }
+}
+
+.button-result {
+    background-color: $button-result;
+    padding: 5px 30px;
+
+    &:hover,
+    &:focus {
+        background-color: darken($button-result, 20%);
+    }
+}
