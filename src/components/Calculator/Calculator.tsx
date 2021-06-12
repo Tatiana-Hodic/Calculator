@@ -4,8 +4,6 @@ import {Button} from './../Button/Button';
 import {TextInput} from './../TextInput/TextInput';
 import {useState} from 'react';
 
-let inputIndex: boolean = true;
-
 enum Operation{
     '+',
     '-',
@@ -15,9 +13,6 @@ enum Operation{
 
 function doOperation(operation:Operation, a:number, b:number):string
 {
-    //vezme openedNumber, premeni na cislo, ulozi na misto v poli a vymaze
-    inputIndex = !inputIndex;
-    //provede operaci
     switch(operation) {
         case 0: {
             return (a + b).toString();
@@ -30,7 +25,7 @@ function doOperation(operation:Operation, a:number, b:number):string
         }
         case 3: {
             if (b === 0) {
-                window.prompt("Nulou nelze dělit.");
+                alert("Nulou nelze dělit.");
                 return "";
             }
             else {
@@ -46,9 +41,11 @@ export function Calculator(props: any):any {
     const [operation, setOperation] = useState(0);
     const [a, seta] = useState(0);
     const [b, setb] = useState(0);
+    const [storedOperation, setStoredOperation] = useState('');
 
     const addNumber = (n:string) => setOpenedNumber(() => openedNumber + n);
-    const processOperation = (o:Operation) => {setOperation(o); seta(parseInt(openedNumber)); setToEmpty()};
+    const processOperation = (o:Operation) => {setOperation(o); setStoredOperation(openedNumber + " " + Operation[o] + " "); seta(parseFloat(openedNumber)); setToEmpty()};
+    console.log(storedOperation);
     const setToEmpty = () => setOpenedNumber(() => "");
 
     return( 
@@ -67,8 +64,17 @@ export function Calculator(props: any):any {
         <Button className="button-number" onClick={():void => addNumber("9")}>9</Button>
         <Button className="button-operation" onClick={():void => processOperation(2)}>*</Button> <br />
         <Button className="button-number" onClick={():void => addNumber("0")}>0</Button>
+        <Button className="button-number" onClick={():void => addNumber(".")}>.</Button>
         <Button className="button-operation" onClick={():void => setToEmpty()}>C</Button>
         <Button className="button-operation" onClick={():void => processOperation(3)}>/</Button> <br />
-        <Button className="button-result" onClick={():void => {console.log(doOperation(operation, a, parseInt(openedNumber))); setOpenedNumber(doOperation(operation, a, parseInt(openedNumber)))}}>Spočítat</Button>
+        <Button className="button-result" 
+        onClick={
+        ():void => {
+        let bLocal = parseFloat(openedNumber);
+        setb(bLocal);
+        setOpenedNumber(doOperation(operation, a, bLocal));
+        setStoredOperation(storedOperation + openedNumber + " = " + doOperation(operation, a, bLocal));
+        props.onCalculated(storedOperation + openedNumber + " = " + doOperation(operation, a, bLocal));
+        }}>Spočítat</Button>
     </div>)
 }
